@@ -79,7 +79,7 @@ function renderQuiz() {
             else { d.classList.add('wrong'); saveStats(q.en, false);
                 Array.from(container.children).forEach(c => { if(c.innerText === q.jp) c.classList.add('correct'); });
             }
-            setTimeout(() => { testIdx++; renderQuiz(); }, 1200);
+            setTimeout(() => { testIdx++; renderQuiz(); }, 700);
         };
         container.appendChild(d);
     });
