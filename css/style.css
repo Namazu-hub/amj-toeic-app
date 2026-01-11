@@ -6,16 +6,40 @@
         nav button { padding: 15px 5px; border: none; background: none; font-weight: bold; cursor: pointer; color: #5f6368; flex: 1; font-size: 13px; transition: 0.3s; }
         nav button.active { color: var(--primary); border-bottom: 3px solid var(--primary); }
 
-        .view { display: none; width: 95%; max-width: 500px; padding: 20px; box-sizing: border-box; text-align: center; animation: fadeIn 0.3s ease; }
-        .view.active { display: block; }
+      .view { 
+            display: none; 
+            width: 95%; 
+            max-width: 500px; 
+            padding: 20px; 
+            box-sizing: border-box; 
+            text-align: center; 
+            /* アニメーションの重さを軽減 */
+            will-change: opacity, transform; 
+            animation: fadeIn 0.2s ease-out; /* 時間を少し短く */
+        } 
+       .view.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         /* Common UI */
         .selector-group { background: white; padding: 10px; border-radius: 12px; margin-bottom: 15px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
         select { width: 100%; padding: 10px; border: none; font-size: 16px; background: transparent; outline: none; }
-
-        .card { background: white; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); padding: 40px 20px; margin-bottom: 20px; cursor: pointer; min-height: 200px; display: flex; flex-direction: column; justify-content: center; position: relative; }
-        .tag { position: absolute; top: 15px; left: 15px; font-size: 10px; background: #e8f0fe; color: var(--primary); padding: 4px 10px; border-radius: 8px; font-weight: bold; }
+    .card { 
+        background: white; 
+        border-radius: 20px; 
+        box-shadow: 0 10px 25px rgba(0,0,0,0.05); 
+        padding: 40px 20px; 
+        margin-bottom: 20px; 
+        cursor: pointer; 
+        min-height: 200px; 
+        display: flex; 
+        flex-direction: column; 
+        justify-content: center; 
+        position: relative; 
+        /* カードの描画を高速化 */
+        transform: translateZ(0); 
+        -webkit-transform: translateZ(0);
+        }      
+    .tag { position: absolute; top: 15px; left: 15px; font-size: 10px; background: #e8f0fe; color: var(--primary); padding: 4px 10px; border-radius: 8px; font-weight: bold; }
         .audio-btn { position: absolute; top: 15px; right: 15px; font-size: 24px; color: #ddd; padding: 5px; }
         .en { font-size: 32px; font-weight: bold; color: #202124; line-height: 1.2; }
         .jp { font-size: 24px; color: var(--error); margin-top: 20px; font-weight: bold; }
@@ -39,6 +63,10 @@
 
         .main-btn { background: var(--primary); color: white; border: none; padding: 16px 32px; border-radius: 35px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 20px; box-shadow: 0 4px 12px rgba(26,115,232,0.3); width: 85%; }
         .hidden { display: none !important; }
+.main-btn:active {
+    transform: scale(0.98);
+    transition: 0.1s;
+}
 
         /* css/style.css の最後に追加してください *
 /* テスト用進行バー */
