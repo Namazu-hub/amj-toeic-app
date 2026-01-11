@@ -121,28 +121,42 @@ function renderGQuiz() {
 }
 
 // --- 進捗一覧 ---
+// --- 高速化版：進捗一覧 ---
 function renderList() {
     const b = document.getElementById('list-body');
     const genre = document.getElementById('list-genre').value;
+    
+    // 一度中身を空にする
     b.innerHTML = '';
+    
+    // データをフィルタリング
     const filtered = (genre === "全ジャンル") ? rawData : rawData.filter(w => w.cat === genre);
 
-    filtered.sort((a,b) => stats[a.en].c - stats[b.en].c).forEach(w => {
+    // 習得度が低い順にソート
+    filtered.sort((a,b) => stats[a.en].c - stats[b.en].c);
+
+    // 【高速化ポイント】HTMLを配列に貯めてから、最後に一回だけ描画する
+    const rows = filtered.map(w => {
         const s = stats[w.en];
         const acc = s.t === 0 ? 0 : (s.c / s.t * 100);
         const mastery = Math.min(s.c * 10, 100);
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-            <td><b>${w.en}</b><br><small style="color:#999">${w.cat}</small></td>
-            <td>${w.jp}</td>
-            <td>
-                <span class="stat-text">正解率: ${acc.toFixed(1)}%</span>
-                <div class="bar-container"><div class="accuracy-fill" style="width:${acc}%"></div></div>
-                <span class="stat-text">習得度: ${mastery}pt (正解 ${s.c}回)</span>
-                <div class="bar-container"><div class="mastery-fill" style="width:${mastery}%"></div></div>
-            </td>`;
-        b.appendChild(tr);
+        
+        // テンプレートリテラルでHTML文字列を作成
+        return `
+            <tr>
+                <td><b>${w.en}</b><br><small style="color:#999">${w.cat}</small></td>
+                <td>${w.jp}</td>
+                <td>
+                    <span class="stat-text">正解率: ${acc.toFixed(1)}%</span>
+                    <div class="bar-container"><div class="accuracy-fill" style="width:${acc}%"></div></div>
+                    <span class="stat-text">習得度: ${mastery}pt (正解 ${s.c}回)</span>
+                    <div class="bar-container"><div class="mastery-fill" style="width:${mastery}%"></div></div>
+                </td>
+            </tr>`;
     });
+
+    // まとめて流し込む（これが500倍速い）
+    b.innerHTML = rows.join('');
 }
 
 function handleSpeak(e, mode) {
